@@ -33,26 +33,6 @@ _json_content_types = set([
     ])
 
 
-class WSGIClientManager(object):
-    """Lifecycle manager for global api clients."""
-
-    def __init__(self, frontend_name, backend_config, runner_options):
-        self.config = backend_config
-
-    def create(self):
-        from alfajor.apiclient import APIClient
-
-        entry_point = self.config['server-entry-point']
-        app = eval_dotted_path(entry_point)
-
-        base_url = self.config.get('base_url')
-        logger.debug("Created in-process WSGI api client rooted at %s.",
-                     base_url)
-        return APIClient(app, base_url=base_url)
-
-    def destroy(self):
-        logger.debug("Destroying in-process WSGI api client.")
-
 
 class APIClient(object):
 
